@@ -51,7 +51,7 @@ class Database:
             return
  
         try:
-            self.cursor.execute(sql, params = None)
+            self.cursor.execute(sql, params)
  
             if self.cursor.description:
                 return self.cursor.fetchall()
@@ -62,6 +62,13 @@ class Database:
         except Error as e:
             print(f'Erro de execução: {e}')
             return
+ 
+    def __enter__(self):
+        self.conectar()
+        return self
+ 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.desconectar()
  
  
 BASE_DIR = Path(__file__).resolve().parent.parent
